@@ -17,7 +17,6 @@ const Navbar = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Employee Dashboard
           </Typography>
-          <Button color="inherit"><Link style={{color:'white', textDecoration:'none'}} to={'/viewemployees'}>User Home</Link></Button>
           <Button color="inherit"><Link style={{color:'white', textDecoration:'none'}} to={'/loginadmin'}>Admin Login</Link></Button>
           <Button color="inherit"><Link style={{color:'white', textDecoration:'none'}} to={'/employees'}>Admin Home</Link></Button>
           <Button color="inherit" onClick={tokenrelease}><Link style={{color:'white', textDecoration:'none'}}to={'/'}>Logout</Link></Button>
