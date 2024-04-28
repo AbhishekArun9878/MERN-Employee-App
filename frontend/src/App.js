@@ -19,9 +19,9 @@ function App() {
     <>
       <Routes>
         <Route path={'/'} element={<Loginuser />} />
-        <Route path={'/loginadmin'} element={<Login/>} />
-        <Route path={'/sign'} element={<Signup />} />
-        <Route path={'/signup'} element={<Signupuser />} />
+        <Route path={'/loginadmin'} element={<Login />} />
+        <Route path={'/signupadmin'} element={<Signup />} />
+        <Route path={'/signupuser'} element={<Signupuser />} />
         <Route path={'/viewemployees'} element={<Main child={<ViewEmployees />} />} />
         <Route element={<PrivateRoutes />}>
         <Route path={'/employees'} element={<Main child={<Employees />} />} />

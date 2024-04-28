@@ -1,24 +1,36 @@
 const express = require('express');
 const morgan = require('morgan');
-require ('dotenv').config();
- require('./database/connections');
-const employeeRoute = require('./routes/userRoutes');
+const path = require('path');
+require('dotenv').config();
+require('./database/connections');
+
 const dataRoutes = require('./routes/employeeRoutes');
-const normaluser = require('./routes/normaluserRoutes');
-const viewData = require('./routes/viewRoutes')
+const viewData = require('./routes/viewRoutes');
+const authRoutes = require('./routes/auth');
+const employeeRoute = require('./routes/employeeRoutes');
 
 const app = express();
-const cors = require('cors')
+const cors = require('cors');
 
+// Middleware
+app.use(express.static(path.join(__dirname, '/build')));
 app.use(morgan('dev'));
-app.use(cors())
+app.use(cors());
+app.use(express.json());
 
-app.use('/admin', employeeRoute)
-app.use('/admin', dataRoutes)
-app.use('/user', normaluser)
-app.use('/user', viewData)
+// Routes
+app.use('/admin', dataRoutes);
+app.use('/admin', employeeRoute);
+app.use('/user', viewData);
+app.use('/auth', authRoutes);
 
-const PORT = process.env.PORT;
+// Serve React build
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/build/index.html'));
+});
+
+// Start server
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

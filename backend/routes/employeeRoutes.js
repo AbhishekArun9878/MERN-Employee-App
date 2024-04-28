@@ -10,7 +10,7 @@ function verifyToken(req, res, next) {
         if (!token) {
             throw 'Unauthorized Access';
         }
-        let payload = jwt.verify(token, 'reactblogapp');
+        let payload = jwt.verify(token, 'mernapp');
         if (!payload) {
             throw 'Unauthorized Access';
         }

@@ -7,7 +7,7 @@ import axios from "axios";
 
 const Loginuser = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState();
+  const [user, setUser] = useState({ username: "", password: "" });
 
   const inputHandler = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -15,9 +15,9 @@ const Loginuser = () => {
 
   const addHandler = () => {
     axios
-      .post("http://localhost:4000/user/login", user)
+      .post("http://localhost:4000/auth/user/login", user)
       .then((res) => {
-        if (res.data.message === "User Login success") {
+        if (res.data.message === "User login success") {
           alert(res.data.message);
           navigate("/viewemployees");
         } else {
@@ -25,7 +25,11 @@ const Loginuser = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response && err.response.status === 401) {
+          window.alert("Invalid Login. Please check your credentials.");
+        } else {
+          console.error(err);
+        }
       });
   };
 
@@ -72,7 +76,7 @@ const Loginuser = () => {
         </Typography>
         <div>
           <TextField
-            id="outlined-required-email"
+            id="outlined-required-username"
             label="Username"
             name="username"
             InputLabelProps={{ style: { color: "white" } }}
@@ -99,7 +103,11 @@ const Loginuser = () => {
           style={{ marginTop: "20px", color: "white" }}
         >
           Don't have an account?{" "}
-          <Link component={RouterLink} to="/signup" style={{ color: "white" }}>
+          <Link
+            component={RouterLink}
+            to="/signupuser"
+            style={{ color: "white" }}
+          >
             Signup
           </Link>
         </Typography>

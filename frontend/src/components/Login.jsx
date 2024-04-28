@@ -1,76 +1,88 @@
-import React, { useState } from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField'; 
-import { Button, Typography, Link } from '@mui/material';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState } from "react";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import { Button, Typography, Link } from "@mui/material";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState();
+  const [user, setUser] = useState({ username: "", password: "" });
 
   const inputHandler = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
   const addHandler = () => {
-    axios.post("http://localhost:4000/admin/loginadmin", user)
+    axios
+      .post("http://localhost:4000/auth/admin/login", user)
       .then((res) => {
-        if (res.data.message === "login success") {
+        if (res.data.message === "Admin login success") {
           alert(res.data.message);
           console.log(res.data.token);
-          sessionStorage.setItem('userToken', res.data.token);
-          navigate('/employees');
+          sessionStorage.setItem("userToken", res.data.token);
+          navigate("/employees");
         } else {
           alert(res.data.message);
         }
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response && err.response.status === 401) {
+          window.alert("Unauthorized access. Please check your credentials.");
+        } else {
+          console.error(err);
+        }
       });
   };
 
   return (
     <div
       style={{
-        backgroundImage: 'radial-gradient( circle farthest-corner at 10% 20%,  rgba(100,43,115,1) 0%, rgba(4,0,4,1) 90% )',
-        minHeight: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
+        backgroundImage:
+          "radial-gradient( circle farthest-corner at 10% 20%,  rgba(100,43,115,1) 0%, rgba(4,0,4,1) 90% )",
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
       <Box
         component="form"
         sx={{
-          '& .MuiTextField-root': { 
-            m: 1, 
-            width: '35ch', 
-            borderRadius: '10px', 
-            '& input::placeholder': { 
-              color: 'white' 
+          "& .MuiTextField-root": {
+            m: 1,
+            width: "35ch",
+            borderRadius: "10px",
+            "& input::placeholder": {
+              color: "white",
             },
-            border: '1px solid white', 
-            borderColor: 'white', 
+            border: "1px solid white",
+            borderColor: "white",
           },
-          bgcolor: 'rgba(255, 255, 255, 0.2)',
+          bgcolor: "rgba(255, 255, 255, 0.2)",
           p: 4,
-          borderRadius: '20px',
-          textAlign: 'center',
-          height: '400px',
-          width: '400px',
+          borderRadius: "20px",
+          textAlign: "center",
+          height: "400px",
+          width: "400px",
         }}
         noValidate
         autoComplete="off"
       >
-        <Typography variant='h4' style={{ color: 'white', marginBottom: '20px' }}> Admin Login</Typography>
+        <Typography
+          variant="h4"
+          style={{ color: "white", marginBottom: "20px" }}
+        >
+          {" "}
+          Admin Login
+        </Typography>
         <div>
           <TextField
             id="outlined-required-email"
             label="Username"
             name="username"
-            InputLabelProps={{ style: { color: 'white' } }}
-            inputProps={{ style: { color: 'white' } }}
+            InputLabelProps={{ style: { color: "white" } }}
+            inputProps={{ style: { color: "white" } }}
             onChange={inputHandler}
           />
         </div>
@@ -80,14 +92,26 @@ const Login = () => {
             label="Password"
             name="password"
             type="password"
-            InputLabelProps={{ style: { color: 'white' } }}
-            inputProps={{ style: { color: 'white' } }}
+            InputLabelProps={{ style: { color: "white" } }}
+            inputProps={{ style: { color: "white" } }}
             onChange={inputHandler}
           />
         </div>
-        <Button variant='contained' color='secondary' onClick={addHandler}>Login</Button>
-        <Typography variant="body2" style={{ marginTop: '20px', color: 'white' }}>
-          Don't have an account? <Link component={RouterLink} to="/sign" style={{ color: 'white' }}>Signup</Link>
+        <Button variant="contained" color="secondary" onClick={addHandler}>
+          Login
+        </Button>
+        <Typography
+          variant="body2"
+          style={{ marginTop: "20px", color: "white" }}
+        >
+          Don't have an account?{" "}
+          <Link
+            component={RouterLink}
+            to="/signupadmin"
+            style={{ color: "white" }}
+          >
+            Signup
+          </Link>
         </Typography>
       </Box>
     </div>
